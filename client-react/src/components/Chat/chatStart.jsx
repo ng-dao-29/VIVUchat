@@ -29,7 +29,7 @@ export default function ChatStart() {
                     src={userData?.avatar}
                     sx={{width: 150, height: 150}}
                 />
-                <p className="text-2xl mb-4">Chào mừng {userData?.name} đến với ViVuChat</p>
+                <p className="text-2xl mb-4">Chào mừng bạn đến với ViVuChat</p>
                 <p>Khám phá những tiện ích hỗ trợ làm việc và trò</p>
                 <p>chuyện cùng người thân, bạn bè</p>
             </div>
