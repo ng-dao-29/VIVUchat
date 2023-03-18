@@ -117,7 +117,7 @@ class AuthController {
     async UpdatePassword(req, res) {
         try {
             const { password, newPassword } = req.body;
-            let user = await userService.getUserById(req);
+            let user = await userService.getPassword(req);
             const isPasswordMatch = await bcrypt.compare(password, user.password);
             if (isPasswordMatch) {
                 let hashPassword = await bcrypt.hash(newPassword,10)

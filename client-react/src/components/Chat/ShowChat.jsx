@@ -26,7 +26,7 @@ import emojis from "emoji-picker-react/src/data/emojis";
 export default function ShowChat() {
     const navigate = useNavigate()
     const [listMessage, setListMessage] = useState([]);
-    const [dataChat, setDataChat] = useState({})
+    const [dataChat, setDataChat] = useState()
     const [showIcon, setShowIcon] = useState(false)
     const [message, setMessage] = useState("");
     const {userData} = useSelector((state) => state.auth?.user);
@@ -34,18 +34,19 @@ export default function ShowChat() {
     const params = useParams();
 
     useEffect(() => {
-        getMessages(params).then((res) => {
-            setListMessage(res.data.data);
-        }).catch((err) => {
-            setListMessage([])
-        });
         getDataChat(params)
             .then((res) => {
+                console.log(res.data.data)
                 setDataChat(res.data.data)
             })
             .catch((err) => {
                 navigate("/")
             })
+        getMessages(params).then((res) => {
+            setListMessage(res.data.data);
+        }).catch((err) => {
+            setListMessage([])
+        });
     }, [params]);
     const handelShowIcon = () => {
         setShowIcon(!showIcon);
@@ -62,17 +63,20 @@ export default function ShowChat() {
         if (message !== "") {
             sendMessage(params, message).then((res) => {
                 let receivers = [];
-                dataChat.member.forEach((userId) => {
-                    if (userData.id !== userId) {
-                        receivers.push(userId)
+                dataChat.member.forEach((user) => {
+                    if (userData.id !== user.id) {
+                        receivers.push(user.id)
                     }
                 })
-                console.log(receivers)
                 let messageSend = res.data.data
                 if (res.data.message === "new message") {
                     socket.emit("sendMessage", messageSend, receivers)
                 } else {
-                    socket.emit("newChat", dataChat, receivers, userData)
+                    if (dataChat.isGroup) {
+                        socket.emit("sendMessage", messageSend, receivers)
+                    } else {
+                        socket.emit("newChat", dataChat, receivers, userData)
+                    }
                 }
                 setListMessage([...listMessage, messageSend]);
             })
@@ -82,6 +86,7 @@ export default function ShowChat() {
     }
 
     socket.on("newMessage", (newMessage) => {
+        console.log(newMessage)
         if (params.id === newMessage.room) {
             setListMessage([...listMessage, newMessage])
         }
@@ -98,7 +103,7 @@ export default function ShowChat() {
                                 anchorOrigin={{vertical: "bottom", horizontal: "right"}}
                                 variant="dot"
                             >
-                                <Avatar src={dataChat?.avatar}/>
+                                <Avatar alt="avatar" src={dataChat?.avatar[0]}/>
                             </StyledBadgeOnline>
                         ) : (
                             <StyledBadgeOffline
@@ -106,10 +111,9 @@ export default function ShowChat() {
                                 anchorOrigin={{vertical: "bottom", horizontal: "right"}}
                                 variant="dot"
                             >
-                                <Avatar src={dataChat?.avatar}/>
+                                <Avatar alt="avatar" src={dataChat?.avatar[0]}/>
                             </StyledBadgeOffline>
                         )}
-
                     </ListItemAvatar>
                     <ListItemText primary={<b><h1>{dataChat?.name}</h1></b>}
                                   secondary={dataChat?.online? "Online" : moment(dataChat?.lastActivity).fromNow()}

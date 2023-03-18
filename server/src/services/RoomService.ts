@@ -1,6 +1,7 @@
 import {AppDataSource} from "../database/data-source";
-import { Rooms } from "../models/Rooms";
-import { Users } from "../models/Users";
+import {Rooms} from "../models/Rooms";
+import {Users} from "../models/Users";
+
 const roomRepository = AppDataSource.getRepository(Rooms);
 const userRepository = AppDataSource.getRepository(Users);
 
@@ -18,7 +19,7 @@ class RoomService {
         });
         return dataRoom;
     }
- 
+
     async checkRoom(req) {
         let user = req.user;
         let userChat = await userRepository.findOneBy({
@@ -54,13 +55,37 @@ class RoomService {
     async createRoomprivate(req) {
         console.log(req.body)
         let user = req.user;
-            let userChat = await userRepository.findOneBy({
-                id: req.body.userId[0],
-            });
-            let roomName = user.id + ":" + userChat.id;
+        let userChat = await userRepository.findOneBy({
+            id: req.body.userId[0],
+        });
+        let roomName = user.id + ":" + userChat.id;
         let newRoom = new Rooms();
-            newRoom.name = roomName;
-            newRoom.member = [user, userChat];
+        newRoom.name = roomName;
+        newRoom.member = [user, userChat];
+        let newRoomData = await roomRepository.save(newRoom);
+        if (newRoomData) {
+            return newRoomData;
+        }
+    }
+
+    async CreateRoomGroup(req) {
+        console.log(req.body);
+        let user = req.user;
+        const {listUsersId, nameGroup} = req.body;
+        let listUser = [user]
+        for (let i = 0; i < listUsersId.length; i++) {
+            let userChat = await userRepository.findOneBy({
+                id: listUsersId[i],
+            });
+            if (userChat) {
+                listUser.push(userChat)
+            }
+        }
+        let newRoom = new Rooms();
+        newRoom.name = nameGroup;
+        newRoom.member = listUser;
+        newRoom.isGroup = true;
+        newRoom.owner = user;
         let newRoomData = await roomRepository.save(newRoom);
         if (newRoomData) {
             return newRoomData;
@@ -72,7 +97,8 @@ class RoomService {
             relations: {
                 rooms: {
                     member: true,
-                    messages: true
+                    messages: true,
+                    owner: true
                 }
             },
             where: {
@@ -85,17 +111,36 @@ class RoomService {
 
     async getDataRoom(req) {
         let dataRoom = await roomRepository.findOne({
+            select: {
+                member: {
+                    id: true,
+                    name: true,
+                    email: true,
+                    avatar: true,
+                    online: true,
+                    lastActivity: true,
+                }
+            },
             relations: {
                 member: true,
                 messages: {
                     userSend: true,
-                }
+                },
+                owner: true
             },
             where: {
                 id: req.params.id
             }
         });
         return dataRoom;
+    }
+
+    async addMember(chat,user) {
+        let listMember = chat.member;
+
+        listMember.push(user);
+        chat.member = listMember
+        const chatUpdate = await roomRepository.save(chat)
     }
 }
 
