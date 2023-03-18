@@ -126,6 +126,12 @@ class UserService {
             return dataUser
         }
     }
+
+    async makeFriend(req) {
+        let user = await userRepository.findOneBy({id: req.user.id});
+        let NewFriend = await userRepository.findOneBy({id: req.body.userId});
+
+    }
 }
 
 export default new UserService();

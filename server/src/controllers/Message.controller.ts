@@ -5,6 +5,7 @@ import RoomService from "../services/RoomService";
 class MessageController {
     async createMessage(req,res) {
         try{
+            console.log(req.body);
             let checkRoom = await RoomService.checkId(req);
             if (!checkRoom) {
                 res.status(404).json({

@@ -62,6 +62,7 @@ export default function ShowChat() {
     })
 
     const handleEmojiClick = (emoji) => {
+        console.log(emoji)
         let msg = message;
         msg += emoji.emoji;
         setMessage(msg);
@@ -171,11 +172,11 @@ export default function ShowChat() {
                 <div style={{ height: 20}}><span></span></div>
                 <div className="rounded-3xl border-solid border-2"
                      style={{height: 45, backgroundColor: "#1c1a1a", borderColor: "yellow"}}>
-                    <div>
-                        {showIcon&&
-                            <Picker onEmojiClick={( emoji) => handleEmojiClick( emoji)} />
-                        }
-                    </div>
+                    {/*<div>*/}
+                    {/*    {showIcon&&*/}
+                    {/*        <Picker emojiStyle={"facebook"} onEmojiClick={( emoji) => handleEmojiClick( emoji)} />*/}
+                    {/*    }*/}
+                    {/*</div>*/}
                     <AddReactionIcon onClick={handelShowIcon} className="ml-3 mr-2.5" style={{height: 30, width: 30, color: "yellow"}} />
                     <input className="h-8 w-5/6 mr-2 focus:outline-none"
                            style={{marginTop: "5px"}}
