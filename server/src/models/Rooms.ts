@@ -3,6 +3,7 @@ import {
     PrimaryGeneratedColumn,
     Column,
     OneToOne,
+    ManyToOne,
     ManyToMany,
     JoinColumn,
     OneToMany,
@@ -22,7 +23,11 @@ export class Rooms{
     @Column({type: "varchar", nullable: true})
     name: string;
 
-    @OneToOne(() => Users, (user) => user)
+    // @OneToOne(() => Users, (user) => user)
+    // @JoinColumn()
+    // owner: Users;
+
+    @ManyToOne(() => Users, (user) => user)
     @JoinColumn()
     owner: Users;
 
@@ -33,7 +38,7 @@ export class Rooms{
     @Column({type: "boolean", nullable: true})
     online: boolean;
 
-    @Column({type: "varchar"})
+    @Column({type: "varchar", nullable: true})
     avatar: any;
 
     @OneToMany(() => Messages, (message) => message.room)

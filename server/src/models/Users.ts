@@ -42,4 +42,8 @@ export class Users {
 
     @ManyToMany(() => Rooms, (room) => room.member)
     rooms: Rooms[];
+
+    @OneToMany(() => Rooms, room => room.owner)
+    roomsCreated: Rooms[];
+    
 }
