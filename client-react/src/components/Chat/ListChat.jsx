@@ -19,6 +19,7 @@ import MenuWindow from "../OtherComponents/MenuWindow";
 import StyledBadgeOffline from "./little/statusOffline";
 import StyledBadgeOnline from "./little/statusOnline";
 import moment from "moment";
+import socket from "../../config/socket";
 
 export default function ListChat() {
     const dispatch = useDispatch();
@@ -43,8 +44,11 @@ export default function ListChat() {
         setOpen(false);
     };
 
+    socket.on("operationHandling", () => {
+        getChats(dispatch)
+    })
+
     const toggleDrawer = (open) => (event) => {
-        console.log(open)
         if (
             event &&
             event.type === 'keydown' &&
@@ -80,9 +84,7 @@ export default function ListChat() {
             if (res.data.message === "create new chat successfully") {
                 dispatch(addChat(res.data.data));
             }
-        }).catch((err) => {
-            console.log(err.response.data.message);
-        })
+        }).catch()
     }
 
     return (
@@ -191,9 +193,17 @@ export default function ListChat() {
                                                 )}
 
                                             </ListItemAvatar>
-                                            <ListItemText primary={<b>{chat.name}</b>}
-                                                secondary={chat.online ? "Online" : moment(chat.lastActivity).fromNow()}
+                                            {chat.isGroup ? (
+                                             <ListItemText 
+                                             primary={<b>{chat.name}</b>}
+                                             />
+                                            ): (
+                                                <ListItemText 
+                                            primary={<b>{chat.name}</b>}
+                                            secondary={chat.online ? "Online" : moment(chat.lastActivity).fromNow()}
                                             />
+                                            )}
+                                            
                                         </ListItemButton>
                                     </Link>
                                 ))}

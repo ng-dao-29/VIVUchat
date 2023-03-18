@@ -17,7 +17,7 @@ export class Relationships {
     @ManyToOne(() => Users, (user) => user.follow)
     user: Users;
 
-    @ManyToOne(() => Users, (user) => user.id)
+    @ManyToOne(() => Users, (user) => user.followers)
     object: Users;
 
     @Column({type: "enum", enum: ["friend", "block", "waiting"]})

@@ -87,7 +87,6 @@ export default function UpdatePassword(props) {
 
         onSubmit: (values) => {
             updatePassword(values).then((res) => {
-                console.log(res.data)
                 setNotification({
                     success: res.data.success,
                     message: res.data.message

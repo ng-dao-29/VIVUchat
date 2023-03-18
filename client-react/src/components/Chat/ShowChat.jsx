@@ -1,6 +1,6 @@
 import {useState, useEffect} from "react";
 import {Link, useParams, useNavigate} from "react-router-dom";
-import {getMessages, getDataChat} from "../../services/chatService";
+import {getMessages, getDataChat, getChats} from "../../services/chatService";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import ListItemText from "@mui/material/ListItemText";
@@ -14,17 +14,17 @@ import StyledBadgeOffline from "./little/statusOffline";
 import StyledBadgeOnline from "./little/statusOnline";
 import socket from "../../config/socket";
 import AddReactionIcon from '@mui/icons-material/AddReaction';
-
+import {readMessage} from "../../services/chatService";
 import "../../App.css"
 import {Button, IconButton} from "@mui/material";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import moment from "moment/moment";
-import EmojiPicker from "emoji-picker-react";
+// import EmojiPicker from "emoji-picker-react";
 import Picker from 'emoji-picker-react';
-import emojis from "emoji-picker-react/src/data/emojis";
 
 export default function ShowChat() {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const [listMessage, setListMessage] = useState([]);
     const [dataChat, setDataChat] = useState()
     const [showIcon, setShowIcon] = useState(false)
@@ -34,9 +34,9 @@ export default function ShowChat() {
     const params = useParams();
 
     useEffect(() => {
+        readMessage(params).catch()
         getDataChat(params)
             .then((res) => {
-                console.log(res.data.data)
                 setDataChat(res.data.data)
             })
             .catch((err) => {
@@ -52,8 +52,17 @@ export default function ShowChat() {
         setShowIcon(!showIcon);
     };
 
-    const handleEmojiClick = (event, emoji) => {
-        event.preventDefault()
+    socket.on("operationHandling", () => {
+        getDataChat(params)
+            .then((res) => {
+                setDataChat(res.data.data)
+            })
+            .catch((err) => {
+                navigate("/")
+            })
+    })
+
+    const handleEmojiClick = (emoji) => {
         let msg = message;
         msg += emoji.emoji;
         setMessage(msg);
@@ -79,6 +88,7 @@ export default function ShowChat() {
                     }
                 }
                 setListMessage([...listMessage, messageSend]);
+                readMessage(params).catch()
             })
                 .catch((err) => console.log(err))
             setMessage("")
@@ -86,9 +96,11 @@ export default function ShowChat() {
     }
 
     socket.on("newMessage", (newMessage) => {
-        console.log(newMessage)
         if (params.id === newMessage.room) {
             setListMessage([...listMessage, newMessage])
+            readMessage(params).catch()
+        } else {
+            getChats(dispatch)
         }
     })
 
@@ -115,10 +127,15 @@ export default function ShowChat() {
                             </StyledBadgeOffline>
                         )}
                     </ListItemAvatar>
-                    <ListItemText primary={<b><h1>{dataChat?.name}</h1></b>}
-                                  secondary={dataChat?.online? "Online" : moment(dataChat?.lastActivity).fromNow()}
+                    {dataChat?.isGroup? (
+                        <ListItemText primary={<b><h1>{dataChat?.name}</h1></b>}
+                        />
+                    ): (
+                        <ListItemText primary={<b><h1>{dataChat?.name}</h1></b>}
+                        secondary={dataChat?.online? "Online" : moment(dataChat?.lastActivity).fromNow()}
                     />
-
+                    )}
+                    
                     <IconButton color="primary" aria-label="upload picture" component="label">
                         <PhoneIcon style={{height: "40px", width: "40px"}}/>
                     </IconButton>
@@ -163,12 +180,12 @@ export default function ShowChat() {
                 <div style={{ height: 20}}><span></span></div>
                 <div className="rounded-3xl border-solid border-2"
                      style={{height: 45, backgroundColor: "#1c1a1a", borderColor: "yellow"}}>
-                    {/*<div className="epr-emoji-category-content">*/}
+                    {/*<div>*/}
                     {/*    {showIcon&&*/}
-                    {/*        <Picker onEmojiClick={( emoji, event) => handleEmojiClick(event, emojis)} />*/}
+                    {/*        <Picker emojiStyle={"facebook"} onEmojiClick={( emoji) => handleEmojiClick( emoji)} />*/}
                     {/*    }*/}
-                        <AddReactionIcon onClick={handelShowIcon} className="ml-3 mr-2.5" style={{height: 30, width: 30, color: "yellow"}} />
                     {/*</div>*/}
+                    <AddReactionIcon onClick={handelShowIcon} className="ml-3 mr-2.5" style={{height: 30, width: 30, color: "yellow"}} />
                     <input className="h-8 w-5/6 mr-2 focus:outline-none"
                            style={{marginTop: "5px"}}
                            value={message}
