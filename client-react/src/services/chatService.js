@@ -54,7 +54,7 @@ export const findOrCreateNewChat = (userId) => {
 }
 
 export const createNewGroupChat = (values) => {
-    return axios.post(`/group`, values, {
+    return axios.post(`/chat/group`, values, {
         headers: {
             "Authorization": "Bearer " + localStorage.getItem("token")
         }

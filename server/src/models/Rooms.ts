@@ -6,7 +6,7 @@ import {
     ManyToMany,
     JoinColumn,
     OneToMany,
-    JoinTable,
+    JoinTable, ManyToOne,
 } from "typeorm";
 
 import { Users } from "./Users";
@@ -24,7 +24,7 @@ export class Rooms{
     @Column({type: "varchar", nullable: true})
     name: string;
 
-    @OneToOne(() => Users, (user) => user)
+    @ManyToOne(() => Users, (user) => user)
     @JoinColumn()
     owner: Users;
 
