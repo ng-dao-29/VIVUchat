@@ -1,6 +1,6 @@
 import {useState, useEffect} from "react";
 import {Link, useParams, useNavigate} from "react-router-dom";
-import {getMessages, getDataChat} from "../../services/chatService";
+import {getMessages, getDataChat, getChats} from "../../services/chatService";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import ListItemText from "@mui/material/ListItemText";
@@ -51,6 +51,16 @@ export default function ShowChat() {
     const handelShowIcon = () => {
         setShowIcon(!showIcon);
     };
+
+    socket.on("operationHandling", () => {
+        getDataChat(params)
+            .then((res) => {
+                setDataChat(res.data.data)
+            })
+            .catch((err) => {
+                navigate("/")
+            })
+    })
 
     const handleEmojiClick = (event, emoji) => {
         event.preventDefault()

@@ -135,12 +135,16 @@ class RoomService {
         return dataRoom;
     }
 
-    async addMember(chat,user) {
-        let listMember = chat.member;
-
-        listMember.push(user);
-        chat.member = listMember
-        const chatUpdate = await roomRepository.save(chat)
+    async addMember(req,users) {
+        let chat = await roomRepository.findOne({
+            relations: { member: true},
+            where: {id: req.body.roomId}
+        })
+        users.forEach(user => {
+            chat.member.push(user)
+        })
+         let chatUpdate = await roomRepository.save(chat)
+        return chatUpdate
     }
 }
 

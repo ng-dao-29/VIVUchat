@@ -16,6 +16,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import StyledBadgeOffline from "./little/statusOffline";
 import StyledBadgeOnline from "./little/statusOnline";
 import moment from "moment";
+import socket from "../../config/socket";
 
 export default function ListChat() {
     const dispatch = useDispatch()
@@ -31,6 +32,10 @@ export default function ListChat() {
     const handleClose = () => {
         setOpen(false);
     };
+
+    socket.on("operationHandling", () => {
+        getChats(dispatch)
+    })
 
     const toggleDrawer = (open) => (event) => {
         console.log(open)

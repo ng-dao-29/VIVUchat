@@ -23,7 +23,7 @@ module.exports = (io,socket, onlineUser) => {
         });
         dataChat.name = userSend.name;
         dataChat.avatar = userSend.avatar;
-        io.to(userSocketIds).emit("newChat", dataChat)
+        socket.broadcast.to(userSocketIds).emit("newChat", dataChat)
     };
 
     socket.on("sendMessage", sendMessage);

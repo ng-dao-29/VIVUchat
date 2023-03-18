@@ -11,12 +11,14 @@ class RoomController {
                 let checkRoom = await RoomService.checkRoom(req);
                 if (checkRoom) {
                     let members = []
+                    let avatar = []
                     let chatData = new Rooms();
                     checkRoom.member.forEach((member) => {
                         if (member.id !== req.user.id) {
+                            avatar.push(member.avatar)
                             chatData.id = checkRoom.id;
                             chatData.name = member.name;
-                            chatData.avatar = member.avatar;
+                            chatData.avatar = avatar;
                             chatData.online = member.online;
                             chatData.lastActivity = member.lastActivity
                             members.push(member.id)
@@ -188,13 +190,14 @@ class RoomController {
         try {
             const {userIds, roomId} = req.body;
             console.log(userIds, roomId);
-            let chat = await roomService.checkId(req);
             let users = await userService.getUsers(req);
-            let addUser = await roomService.addMember(chat, users)
+            console.log(users)
+            let addUser = await roomService.addMember(req, users)
+            console.log(addUser)
             res.status(200).json({
                 success: true,
                 message: null,
-                data: null
+                data: addUser
             })
         } catch (e) {
             res.status(500).json({

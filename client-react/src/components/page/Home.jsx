@@ -1,13 +1,14 @@
 import {useEffect} from "react";
-import { Grid} from "@mui/material";
-import { styled } from "@mui/material/styles";
+import {Grid} from "@mui/material";
+import {styled} from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import ListChat from "../Chat/ListChat";
 import ChatStart from "../Chat/chatStart";
 import {useDispatch, useSelector} from "react-redux";
 import socket from "../../config/socket";
 import {addChat} from "../../redux/chatSlice";
-const Item = styled(Paper)(({ theme }) => ({
+
+const Item = styled(Paper)(({theme}) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
     ...theme.typography.body2,
     padding: theme.spacing(1),
@@ -23,28 +24,29 @@ export default function Home({children}) {
         if (userData) {
             socket.emit("setUpUser", userData.id);
         }
-    },[userData])
+    }, [userData])
 
     useEffect(() => {
-        if (!children) {
-            socket.on("newChat", (newChat) => {
-                console.log(1)
-                dispatch(addChat(newChat));
-            })
-        }
-    }, [children])
+        socket.on("newChat", (newChat) => {
+            dispatch(addChat(newChat));
+        })
+    }, [])
+
 
     return (
-        <div className=" py-11 px-28 " style={{ height: 745 ,backgroundImage: "url(https://img2.thuthuat123.com/uploads/2019/11/19/anh-background-bau-troi-dem_122621961.jpg)"}}>
+        <div className=" py-11 px-28 " style={{
+            height: 745,
+            backgroundImage: "url(https://img2.thuthuat123.com/uploads/2019/11/19/anh-background-bau-troi-dem_122621961.jpg)"
+        }}>
             <Grid container spacing={0.1} className="shadow-lg shadow-cyan-500/50 rounded-lg">
                 <Grid item xs={3}>
-                    <Item style={{height: 660, backgroundColor: "rgba(30,28,28,0.93)"}} >
+                    <Item style={{height: 660, backgroundColor: "rgba(30,28,28,0.93)"}}>
                         <ListChat/>
                     </Item>
                 </Grid>
                 <Grid item xs={9}>
-                    <Item  style={{height: 660, backgroundColor: "rgba(30,28,28,0.8)"}}>
-                        {children? children : <ChatStart/>}
+                    <Item style={{height: 660, backgroundColor: "rgba(30,28,28,0.8)"}}>
+                        {children ? children : <ChatStart/>}
                     </Item>
                 </Grid>
             </Grid>
