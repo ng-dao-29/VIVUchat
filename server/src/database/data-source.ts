@@ -13,7 +13,7 @@ export const AppDataSource = new DataSource({
     username: "root",
     password: "290429",
     database: "vivuchat",
-    synchronize: false,
+    synchronize: true,
     logging: false,
     entities: [Users, Rooms, Messages, Relationships],
     migrations: ["dist/src/migrations/*.js"],

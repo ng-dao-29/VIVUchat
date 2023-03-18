@@ -4,4 +4,3 @@ export const userRouter = Router()
 
 userRouter.get("/", UserController.searchUser)
 userRouter.get("/1", UserController.getUser)
-userRouter.post("/friend", UserController.makeFriend)
