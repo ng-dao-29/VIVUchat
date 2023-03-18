@@ -14,6 +14,7 @@ import { addChat } from '../../redux/chatSlice';
 import { getChats, findOrCreateNewChat } from "../../services/chatService";
 import { searchUser } from '../../services/userService';
 import AddChat from "./little/AddChat";
+import AddGroupDialog from './little/AddGroupDialog';
 import MenuWindow from "../OtherComponents/MenuWindow";
 import StyledBadgeOffline from "./little/statusOffline";
 import StyledBadgeOnline from "./little/statusOnline";
@@ -87,15 +88,13 @@ export default function ListChat() {
     return (
         <div>
             <div className="w-full" style={{ backgroundColor: "#003A46" }}>
-                <ListItem sx={{ pl: 0 }}>
-                    <ListItemButton>
-                        <ListItemIcon onClick={() => setOpenMenu(true)}>
-                            <MenuIcon style={{ width: 30, height: 30, color: "black" }} />
-                        </ListItemIcon>
-                    </ListItemButton>
+                <ListItem sx={{ pl: 1 }}>
+                    <IconButton onClick={() => setOpenMenu(true)}>
+                        <MenuIcon style={{ width: 30, height: 30, color: "black" }} />
+                    </IconButton>
                     <ListItemText style={{ paddingLeft: 40 }} primary={<b>ViVuChat</b>} />
                 </ListItem>
-                <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ backgroundColor: "#003A46", pl: 2, pr: 1, py: 1 }}>
+                <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ backgroundColor: "#003A46", pl: 2, pr: 1, pb: 2 }}>
                     <FormControl sx={{ width: "80%" }} variant="outlined">
                         <OutlinedInput
                             id="search-chat"
@@ -122,7 +121,7 @@ export default function ListChat() {
                         <GroupAddIcon />
                     </IconButton>
                 </Stack>
-                <AddChat
+                <AddGroupDialog
                     open={open}
                     onClose={handleClose}
                 />
