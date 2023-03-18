@@ -33,8 +33,8 @@ export class Rooms{
     @Column({type: "boolean", nullable: true})
     online: boolean;
 
-    @Column({type: "varchar", default: ""})
-    avatar: string;
+    @Column({type: "varchar"})
+    avatar: any;
 
     @OneToMany(() => Messages, (message) => message.room)
     messages: Messages[];

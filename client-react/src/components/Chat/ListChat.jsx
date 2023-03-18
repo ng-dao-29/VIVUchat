@@ -91,14 +91,14 @@ export default function ListChat() {
                                                 overlap="circular"
                                                 anchorOrigin={{vertical: "bottom", horizontal: "right"}}
                                                 variant="dot">
-                                                <Avatar src={chat.avatar}/>
+                                                <Avatar src={chat.avatar[0]}/>
                                             </StyledBadgeOnline>
                                         ): (
                                             <StyledBadgeOffline
                                                 overlap="circular"
                                                 anchorOrigin={{vertical: "bottom", horizontal: "right"}}
                                                 variant="dot">
-                                                <Avatar src={chat.avatar}/>
+                                                <Avatar src={chat.avatar[0]}/>
                                             </StyledBadgeOffline>
                                         )}
 

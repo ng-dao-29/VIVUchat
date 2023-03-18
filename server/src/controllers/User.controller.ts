@@ -25,7 +25,7 @@ class UserController {
 
     async getUser(req, res) {
         try {
-            let user = await userService.getUser(req);
+            let user = await userService.getDataUser(req);
             res.status(200).json({
                 success: true,
                 message: null,

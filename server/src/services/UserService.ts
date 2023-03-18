@@ -1,11 +1,13 @@
 import {AppDataSource} from "../database/data-source";
-import { Users } from "../models/Users";
+import {Users} from "../models/Users";
 import bcrypt from "bcrypt";
-import {Like, Not} from "typeorm";
+import {In, Like, Not} from "typeorm";
+
 const userRepository = AppDataSource.getRepository(Users);
+
 class UserService {
 
-    async getUser(req) {
+    async getDataUser(req) {
         let user = await userRepository.findOne({
             select: {
                 id: true,
@@ -35,6 +37,30 @@ class UserService {
     async getUserById(req) {
         let user = await userRepository.findOne({
             where:
+                {id: req.body.userIds}
+        })
+        if (user) {
+            return user
+        }
+    }
+
+    async getUsers(req) {
+        const {userIds} = req.body
+        console.log(userIds)
+        let users = userRepository.find({
+            where: {
+                id: In(userIds)
+            }
+        })
+        return users
+    }
+
+    async getPassword(req) {
+        let user = await userRepository.findOne({
+            select: {
+                password: true,
+            },
+            where:
                 {id: req.user.id}
         })
         if (user) {
@@ -55,7 +81,7 @@ class UserService {
         }
     }
 
-    async search (req) {
+    async search(req) {
         if (req.query.keyword) {
             const usersSearch = await userRepository.find({
                 select: {
@@ -76,12 +102,12 @@ class UserService {
     }
 
     async handelUserOffLine(req) {
-       let user = req.user;
-       user.online = false;
-       const data = await userRepository.save(user);
-       if (data) {
-           return data
-       }
+        let user = req.user;
+        user.online = false;
+        const data = await userRepository.save(user);
+        if (data) {
+            return data
+        }
     }
 
     async handelUserOnLine(user) {
