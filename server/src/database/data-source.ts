@@ -3,7 +3,7 @@ import { DataSource } from "typeorm";
 import { Users } from "../models/Users";
 import { Rooms } from "../models/Rooms";
 import { Messages } from "../models/Messages";
-import {Relationships} from "../models/Relationships";
+import {Relationships} from "../models/Relationships"
 
 export const AppDataSource = new DataSource({
     type: "mysql",

@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import ClearIcon from '@mui/icons-material/Clear';
 import SearchIcon from '@mui/icons-material/Search';
-import { findOrCreateNewChat } from "../../../services/chatService";
 import { useNavigate } from "react-router-dom";
 import { addChat } from "../../../redux/chatSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -39,20 +38,15 @@ export default function AddGroupDialog(props) {
             listUsersId: checked,
             nameGroup: groupTitle
         }
-        if (checked.length > 0) {
-            createNewGroupChat(data).then((res) => {
-                if (res.data.message === "create new chat successfully") {
-                    navigate(`/chat/${res.data.data.id}`);
-                    dispatch(addChat(res.data.data));
-                    onClose();
-                } else {
-                    navigate(`/chat/${res.data.data.id}`);
-                    onClose();
-                }
-            }).catch((err) => {
+        createNewGroupChat(data).then((res) => {
+            dispatch(addChat(res.data.data));
+            navigate(`/chat/${res.data.data.id}`);
+            onClose();
+        })
+            .catch((err) => {
+                console.log(err);
                 onClose();
             })
-        }
     };
 
     const handleToggle = (user) => () => {
