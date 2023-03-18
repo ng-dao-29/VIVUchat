@@ -19,9 +19,8 @@ import "../../App.css"
 import {Button, IconButton} from "@mui/material";
 import {useSelector} from "react-redux";
 import moment from "moment/moment";
-import EmojiPicker from "emoji-picker-react";
+// import EmojiPicker from "emoji-picker-react";
 import Picker from 'emoji-picker-react';
-import emojis from "emoji-picker-react/src/data/emojis";
 
 export default function ShowChat() {
     const navigate = useNavigate()
@@ -62,8 +61,7 @@ export default function ShowChat() {
             })
     })
 
-    const handleEmojiClick = (event, emoji) => {
-        event.preventDefault()
+    const handleEmojiClick = (emoji) => {
         let msg = message;
         msg += emoji.emoji;
         setMessage(msg);
@@ -173,12 +171,12 @@ export default function ShowChat() {
                 <div style={{ height: 20}}><span></span></div>
                 <div className="rounded-3xl border-solid border-2"
                      style={{height: 45, backgroundColor: "#1c1a1a", borderColor: "yellow"}}>
-                    {/*<div className="epr-emoji-category-content">*/}
-                    {/*    {showIcon&&*/}
-                    {/*        <Picker onEmojiClick={( emoji, event) => handleEmojiClick(event, emojis)} />*/}
-                    {/*    }*/}
-                        <AddReactionIcon onClick={handelShowIcon} className="ml-3 mr-2.5" style={{height: 30, width: 30, color: "yellow"}} />
-                    {/*</div>*/}
+                    <div>
+                        {showIcon&&
+                            <Picker onEmojiClick={( emoji) => handleEmojiClick( emoji)} />
+                        }
+                    </div>
+                    <AddReactionIcon onClick={handelShowIcon} className="ml-3 mr-2.5" style={{height: 30, width: 30, color: "yellow"}} />
                     <input className="h-8 w-5/6 mr-2 focus:outline-none"
                            style={{marginTop: "5px"}}
                            value={message}

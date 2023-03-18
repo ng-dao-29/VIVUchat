@@ -38,7 +38,7 @@ export default function Register() {
             password: Yup.string()
                 .required("không được để trống")
                 .matches(
-                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,25}$/,
+                    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#@$!%*?&])[A-Za-z\d@$!%*?&]{8,25}$/,
                     "Tối thiểu 8 và tối đa 25 ký tự, ít nhất một chữ hoa, một chữ thường, một số và một ký tự đặc biệt"
                 ),
             confirmPassword: Yup.string()

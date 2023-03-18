@@ -6,7 +6,8 @@ import {
     ManyToMany, JoinTable
 } from "typeorm"
 import { Rooms } from "./Rooms";
-import {Relationships} from "./Relationships";
+import { Relationships } from "./Relationships";
+import { UsersInRooms } from "./UsersInRooms";
 
 @Entity()
 export class Users {
@@ -38,8 +39,11 @@ export class Users {
     follow: Relationships[];
 
     @OneToMany(() => Relationships, (relationship) => relationship.object)
-
+    followers: Relationships[];
 
     @ManyToMany(() => Rooms, (room) => room.member)
     rooms: Rooms[];
+
+    // @OneToMany(() => UsersInRooms, (usersInRoom) => usersInRoom.users)
+    // userInRoom: UsersInRooms[];
 }

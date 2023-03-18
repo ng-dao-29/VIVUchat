@@ -27,25 +27,24 @@ export default function Home({children}) {
     }, [userData])
 
     useEffect(() => {
-        socket.on("newChat", (newChat) => {
-            dispatch(addChat(newChat));
-        })
-    }, [])
-
+        if (!children) {
+            socket.on("newChat", (newChat) => {
+                dispatch(addChat(newChat));
+            })
+        }
+    }, [children])
 
     return (
-        <div className=" py-11 px-28 " style={{
-            height: 745,
-            backgroundImage: "url(https://img2.thuthuat123.com/uploads/2019/11/19/anh-background-bau-troi-dem_122621961.jpg)"
-        }}>
-            <Grid container spacing={0.1} className="shadow-lg shadow-cyan-500/50 rounded-lg">
+        <div
+            style={{backgroundImage: "url(https://img2.thuthuat123.com/uploads/2019/11/19/anh-background-bau-troi-dem_122621961.jpg)"}}>
+            <Grid container className="rounded-lg">
                 <Grid item xs={3}>
-                    <Item style={{height: 660, backgroundColor: "rgba(30,28,28,0.93)"}}>
+                    <Item  style={{backgroundColor: "rgba(30,28,28,0.93)"}}>
                         <ListChat/>
                     </Item>
                 </Grid>
-                <Grid item xs={9}>
-                    <Item style={{height: 660, backgroundColor: "rgba(30,28,28,0.8)"}}>
+                <Grid  item xs={9}>
+                    <Item  style={{backgroundColor: "rgba(30,28,28,0.93)"}}>
                         {children ? children : <ChatStart/>}
                     </Item>
                 </Grid>

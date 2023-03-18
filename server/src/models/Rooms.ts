@@ -11,6 +11,8 @@ import {
 
 import { Users } from "./Users";
 import { Messages } from "./Messages";
+import { UsersInRooms} from "./UsersInRooms";
+
 @Entity()
 export class Rooms{
     @PrimaryGeneratedColumn()
@@ -41,4 +43,7 @@ export class Rooms{
 
     @Column({type: "timestamp", nullable: true})
     lastActivity: Date;
+
+    // @OneToMany(() => UsersInRooms, (userInRoom) => userInRoom.rooms)
+    // userInRoom: UsersInRooms[];
 }

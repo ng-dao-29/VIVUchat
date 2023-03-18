@@ -10,8 +10,8 @@ export const getChats = (dispatch) => {
     })
         .then((res) => {
             console.log(res.data.data)
-        dispatch(getChatSuccess(res.data.data));
-    })
+            dispatch(getChatSuccess(res.data.data));
+        })
         .catch((err) => {
             dispatch(getChatFailure(err.response.data.message))
         })
@@ -46,7 +46,15 @@ export const sendMessage = (params, message) => {
 };
 
 export const findOrCreateNewChat = (userId) => {
-    return axios.post(`/chat`, { userId: userId}, {
+    return axios.post(`/chat`, { userId: userId }, {
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token")
+        }
+    })
+}
+
+export const createNewGroupChat = (values) => {
+    return axios.post(`/group`, values, {
         headers: {
             "Authorization": "Bearer " + localStorage.getItem("token")
         }

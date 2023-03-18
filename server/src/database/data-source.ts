@@ -4,6 +4,7 @@ import { Users } from "../models/Users";
 import { Rooms } from "../models/Rooms";
 import { Messages } from "../models/Messages";
 import {Relationships} from "../models/Relationships";
+import { UsersInRooms} from "../models/UsersInRooms";
 
 export const AppDataSource = new DataSource({
     type: "mysql",

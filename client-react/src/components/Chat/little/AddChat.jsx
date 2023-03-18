@@ -90,7 +90,6 @@ export default function AddChat(props) {
                     setListUsers([])
                 })
         }
-
     }
 
     return (
