@@ -155,7 +155,7 @@ export default function ListChat() {
                                     const labelId = `checkbox-list-secondary-label-${user.id}`;
                                     return (
                                         <ListItem key={index}
-                                            onClick={() => {handleClickChat(user.id)}}>
+                                            onClick={() => { handleClickChat(user.id) }}>
                                             <ListItemButton>
                                                 <ListItemAvatar>
                                                     <Avatar
@@ -171,34 +171,34 @@ export default function ListChat() {
                             </List>
                             :
                             <Stack spacing={1}>
-                            {list.map((chat, index) => (
-                                <Link to={`/chat/${chat.id}`} key={index} style={{ backgroundColor: "rgba(237,234,239,0.8)" }}>
-                                    <ListItemButton>
-                                        <ListItemAvatar>
-                                            {chat.online ? (
-                                                <StyledBadgeOnline
-                                                    overlap="circular"
-                                                    anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                                                    variant="dot">
-                                                    <Avatar src={chat.avatar} />
-                                                </StyledBadgeOnline>
-                                            ) : (
-                                                <StyledBadgeOffline
-                                                    overlap="circular"
-                                                    anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                                                    variant="dot">
-                                                    <Avatar src={chat.avatar} />
-                                                </StyledBadgeOffline>
-                                            )}
-    
-                                        </ListItemAvatar>
-                                        <ListItemText primary={<b>{chat.name}</b>}
-                                            secondary={chat.online ? "Online" : moment(chat.lastActivity).fromNow()}
-                                        />
-                                    </ListItemButton>
-                                </Link>
-                            ))}
-                        </Stack>
+                                {list.map((chat, index) => (
+                                    <Link to={`/chat/${chat.id}`} key={index} style={{ backgroundColor: "rgba(237,234,239,0.8)" }}>
+                                        <ListItemButton>
+                                            <ListItemAvatar>
+                                                {chat.online ? (
+                                                    <StyledBadgeOnline
+                                                        overlap="circular"
+                                                        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                                                        variant="dot">
+                                                        <Avatar src={chat.avatar[0]} />
+                                                    </StyledBadgeOnline>
+                                                ) : (
+                                                    <StyledBadgeOffline
+                                                        overlap="circular"
+                                                        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                                                        variant="dot">
+                                                        <Avatar src={chat.avatar[0]} />
+                                                    </StyledBadgeOffline>
+                                                )}
+
+                                            </ListItemAvatar>
+                                            <ListItemText primary={<b>{chat.name}</b>}
+                                                secondary={chat.online ? "Online" : moment(chat.lastActivity).fromNow()}
+                                            />
+                                        </ListItemButton>
+                                    </Link>
+                                ))}
+                            </Stack>
                     }
                 </List>
             </div>

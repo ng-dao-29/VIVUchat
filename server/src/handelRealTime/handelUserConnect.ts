@@ -1,6 +1,7 @@
 import {AppDataSource} from "../database/data-source";
 import { Users } from "../models/Users";
 const userRepository = AppDataSource.getRepository(Users);
+
 module.exports = (io, socket, onlineUser) => {
 
     const setupConnect = async (idUser) => {
