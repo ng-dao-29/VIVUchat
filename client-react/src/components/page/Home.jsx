@@ -24,7 +24,7 @@ export default function Home({children}) {
         if (userData) {
             socket.emit("setUpUser", userData.id);
         }
-    }, [userData])
+    }, [])
 
     useEffect(() => {
         if (!children) {
@@ -32,7 +32,7 @@ export default function Home({children}) {
                 dispatch(addChat(newChat));
             })
         }
-    }, [children])
+    }, [])
 
     return (
         <div

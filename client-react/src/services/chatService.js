@@ -9,7 +9,6 @@ export const getChats = (dispatch) => {
         }
     })
         .then((res) => {
-            console.log(res.data.data)
             dispatch(getChatSuccess(res.data.data));
         })
         .catch((err) => {
@@ -27,6 +26,14 @@ export const getDataChat = (params) => {
 
 export const getMessages = (params) => {
     return axios.get(`/message/${params.id}`, {
+        headers: {
+            "Authorization": "Bearer " + localStorage.getItem("token")
+        }
+    })
+}
+
+export const readMessage = (params) => {
+    return axios.put(`/message/${params.id}`, {},{
         headers: {
             "Authorization": "Bearer " + localStorage.getItem("token")
         }

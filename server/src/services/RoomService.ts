@@ -28,6 +28,7 @@ class RoomService {
         let roomName = user.id + ":" + userChat.id;
         let dataChat = await roomRepository.find({
             relations: {
+                newMessage: true,
                 member: true
             },
             where: {
@@ -38,6 +39,7 @@ class RoomService {
             roomName = userChat.id + ":" + user.id;
             dataChat = await roomRepository.find({
                 relations: {
+                    newMessage: true,
                     member: true,
                 },
                 where: {
@@ -61,17 +63,16 @@ class RoomService {
         let newRoom = new Rooms();
         newRoom.name = roomName;
         newRoom.member = [user, userChat];
-        console.log(2)
         let newRoomData = await roomRepository.save(newRoom);
-        console.log(3)
         if (newRoomData) {
             return newRoomData;
         }
     }
 
     async CreateRoomGroup(req) {
-        console.log(req.body);
+        let avatar = [];
         let user = req.user;
+        let online = false
         const {listUsersId, nameGroup} = req.body;
         let listUser = [user]
         for (let i = 0; i < listUsersId.length; i++) {
@@ -79,6 +80,10 @@ class RoomService {
                 id: listUsersId[i],
             });
             if (userChat) {
+                if (userChat.online) {
+                    online = true
+                }
+                avatar.push(userChat.avatar)
                 listUser.push(userChat)
             }
         }
@@ -89,14 +94,20 @@ class RoomService {
         newRoom.owner = user;
         let newRoomData = await roomRepository.save(newRoom);
         if (newRoomData) {
+            newRoomData.online = online
+            newRoomData.avatar = avatar
             return newRoomData;
         }
     }
 
     async getList(req) {
+
         let dataUser = await userRepository.findOne({
             relations: {
                 rooms: {
+                    newMessage: {
+                        user: true
+                    },
                     member: true,
                     messages: true,
                     owner: true

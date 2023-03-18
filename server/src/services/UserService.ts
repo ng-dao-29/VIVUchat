@@ -46,7 +46,6 @@ class UserService {
 
     async getUsers(req) {
         const {userIds} = req.body
-        console.log(userIds)
         let users = userRepository.find({
             where: {
                 id: In(userIds)

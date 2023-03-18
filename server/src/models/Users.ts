@@ -3,12 +3,11 @@ import {
     Entity,
     Column,
     OneToMany,
-    ManyToMany, JoinTable
+    ManyToMany, JoinTable, OneToOne
 } from "typeorm"
 import { Rooms } from "./Rooms";
 import { Relationships } from "./Relationships";
-import { UsersInRooms } from "./UsersInRooms";
-
+import { NewMessagers } from "./NewMessagers";
 @Entity()
 export class Users {
     @PrimaryGeneratedColumn()
@@ -44,6 +43,7 @@ export class Users {
     @ManyToMany(() => Rooms, (room) => room.member)
     rooms: Rooms[];
 
-    // @OneToMany(() => UsersInRooms, (usersInRoom) => usersInRoom.users)
-    // userInRoom: UsersInRooms[];
+    @OneToMany(() => NewMessagers, (newMessagers) => newMessagers.user)
+    unreadMessages: NewMessagers[];
+
 }

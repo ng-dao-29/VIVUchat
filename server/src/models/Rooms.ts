@@ -3,15 +3,16 @@ import {
     PrimaryGeneratedColumn,
     Column,
     OneToOne,
+    ManyToOne,
     ManyToMany,
     JoinColumn,
     OneToMany,
-    JoinTable, ManyToOne,
+    JoinTable,
 } from "typeorm";
 
 import { Users } from "./Users";
 import { Messages } from "./Messages";
-import { UsersInRooms} from "./UsersInRooms";
+import { NewMessagers} from "./NewMessagers";
 
 @Entity()
 export class Rooms{
@@ -44,6 +45,6 @@ export class Rooms{
     @Column({type: "timestamp", nullable: true})
     lastActivity: Date;
 
-    // @OneToMany(() => UsersInRooms, (userInRoom) => userInRoom.rooms)
-    // userInRoom: UsersInRooms[];
+    @OneToMany(() => NewMessagers, (newMessage) => newMessage.rooms)
+    newMessage: NewMessagers[];
 }

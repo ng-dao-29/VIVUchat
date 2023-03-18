@@ -2,12 +2,10 @@ import RoomService from "../services/RoomService";
 import {Rooms} from "../models/Rooms";
 import roomService from "../services/RoomService";
 import userService from "../services/UserService";
-
+import unreadMessagesService from "../services/UnreadMessagesService";
 class RoomController {
-
     async createRoom(req, res) {
         try {
-            console.log(req.body);
             if (req.body.userId.length === 1) {
                 let checkRoom = await RoomService.checkRoom(req);
                 if (checkRoom) {
@@ -36,6 +34,7 @@ class RoomController {
                     let chatData = new Rooms();
                     let members = []
                     newRoom.member.forEach((member) => {
+                        unreadMessagesService.create(member, newRoom)
                         if (member.id !== req.user.id) {
                             chatData.id = newRoom.id;
                             chatData.name = member.name;
@@ -60,7 +59,6 @@ class RoomController {
                 })
             }
         } catch (e) {
-            console.log(e.message)
             res.status(500).json({
                 success: false,
                 message: e.message,
@@ -71,8 +69,10 @@ class RoomController {
 
     async createGroup(req, res) {
         try {
-            console.log(req.body)
             let newGroup = await roomService.CreateRoomGroup(req);
+            newGroup.member.forEach((member) => {
+                unreadMessagesService.create(member, newGroup)
+            })
             res.status(200).json({
                 success: true,
                 message: null,
@@ -106,6 +106,7 @@ class RoomController {
                                     chatData.online = member.online;
                                     chatData.isGroup = chat.isGroup;
                                     chatData.lastActivity = member.lastActivity;
+                                    chatData.newMessage = chat.newMessage
                                     listChat.push(chatData)
                                 }
                             })
@@ -114,9 +115,11 @@ class RoomController {
                         let avatar = []
                         chat.member.forEach(member => {
                             avatar.push(member.avatar)
+                            if(member.id !== req.user.id) {
                             if (member.online) {
                                 chat.online = true
                             }
+                        }
                         })
                         chat.avatar = avatar
                         listChat.push(chat)
@@ -189,12 +192,8 @@ class RoomController {
 
     async addUser(req, res) {
         try {
-            const {userIds, roomId} = req.body;
-            console.log(userIds, roomId);
             let users = await userService.getUsers(req);
-            console.log(users)
             let addUser = await roomService.addMember(req, users)
-            console.log(addUser)
             res.status(200).json({
                 success: true,
                 message: null,
