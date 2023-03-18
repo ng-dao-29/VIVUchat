@@ -35,7 +35,7 @@ export class Rooms{
     @Column({type: "boolean", nullable: true})
     online: boolean;
 
-    @Column({type: "varchar"})
+    @Column({type: "varchar", nullable: true})
     avatar: any;
 
     @OneToMany(() => Messages, (message) => message.room)

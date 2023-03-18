@@ -53,7 +53,6 @@ class RoomService {
     }
 
     async createRoomprivate(req) {
-        console.log(req.body)
         let user = req.user;
         let userChat = await userRepository.findOneBy({
             id: req.body.userId[0],
@@ -62,7 +61,9 @@ class RoomService {
         let newRoom = new Rooms();
         newRoom.name = roomName;
         newRoom.member = [user, userChat];
+        console.log(2)
         let newRoomData = await roomRepository.save(newRoom);
+        console.log(3)
         if (newRoomData) {
             return newRoomData;
         }

@@ -7,6 +7,7 @@ class RoomController {
 
     async createRoom(req, res) {
         try {
+            console.log(req.body);
             if (req.body.userId.length === 1) {
                 let checkRoom = await RoomService.checkRoom(req);
                 if (checkRoom) {
