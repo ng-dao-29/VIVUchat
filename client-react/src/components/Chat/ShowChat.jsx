@@ -38,6 +38,7 @@ export default function ShowChat() {
         // getChats(dispatch)
         getDataChat(params)
             .then((res) => {
+                console.log(res.data.data)
                 setDataChat(res.data.data)
             })
             .catch((err) => {
