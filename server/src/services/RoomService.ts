@@ -137,6 +137,9 @@ class RoomService {
                 }
             },
             relations: {
+                newMessage: {
+                    user:true
+                },
                 member: true,
                 messages: {
                     userSend: true,

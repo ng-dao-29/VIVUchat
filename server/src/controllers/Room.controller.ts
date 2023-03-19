@@ -7,7 +7,6 @@ class RoomController {
 
     async createRoom(req, res) {
         try {
-
             if (req.body.userId.length === 1) {
                 let checkRoom = await RoomService.checkRoom(req);
                 if (checkRoom) {
@@ -166,9 +165,17 @@ class RoomController {
         try {
             let dataRoom = await RoomService.getDataRoom(req);
             let data = new Rooms()
+            let newMessage = []
             let members = []
+            for (let i=0; i<dataRoom.newMessage.length; i++) {
+                if (dataRoom.newMessage[i].user.id === req.user.id) {
+                    newMessage.push(dataRoom.newMessage[i])
+                }
+            }
+            console.log(newMessage)
             if (!dataRoom.isGroup) {
                 let avatar = []
+                let newMessage = []
                 dataRoom.member.forEach((member) => {
                     members.push(member)
                     if (req.user.id !== member.id) {
@@ -181,6 +188,8 @@ class RoomController {
                     }
                 })
                 data.member = members
+                data.newMessage = newMessage
+                console.log(data)
                 res.status(200).json({
                     success: true,
                     message: null,
@@ -188,6 +197,12 @@ class RoomController {
                 })
             } else {
                 let avatar = [];
+                let newMessage = []
+                for (let i=0; i<dataRoom.newMessage.length; i++) {
+                    if (dataRoom.newMessage[i].user.id === req.user.id) {
+                        members.push(dataRoom.newMessage[i])
+                    }
+                }
                 dataRoom.member.forEach((member) => {
                     avatar.push(member.avatar)
                     if (req.user.id !== member.id) {
@@ -197,6 +212,7 @@ class RoomController {
                     }
                 })
                 dataRoom.avatar = avatar;
+                dataRoom.newMessage = newMessage
                 res.status(200).json({
                     success: true,
                     message: null,
