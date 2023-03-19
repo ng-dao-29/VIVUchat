@@ -48,6 +48,7 @@ export default function AddChat(props) {
         if (checked.length > 0) {
             findOrCreateNewChat(checked).then((res) => {
                 if (res.data.message === "create new chat successfully") {
+                    console.log(res.data.data)
                     dispatch(addChat(res.data.data));
                     navigate(`/chat/${res.data.data.id}`);
                     onClose();

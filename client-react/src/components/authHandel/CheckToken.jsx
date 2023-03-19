@@ -2,6 +2,7 @@ import {Navigate, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import { useEffect } from "react";
 import { getUser } from "../../services/userService";
+import socket from "../../config/socket";
 
 const CheckToken = ({ children }) => {
   const dispatch = useDispatch()
@@ -12,7 +13,8 @@ const CheckToken = ({ children }) => {
     if (!userData) {
       getUser(dispatch,navigate)
     }
-  },[])
+  },[userData])
+
 
   return (
     <>

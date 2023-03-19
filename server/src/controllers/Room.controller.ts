@@ -4,6 +4,7 @@ import roomService from "../services/RoomService";
 import userService from "../services/UserService";
 import unreadMessagesService from "../services/UnreadMessagesService";
 class RoomController {
+
     async createRoom(req, res) {
         try {
             if (req.body.userId.length === 1) {
@@ -12,6 +13,12 @@ class RoomController {
                     let members = []
                     let avatar = []
                     let chatData = new Rooms();
+                    let unreadMessages = [];
+                    for (let i = 0; i < checkRoom.newMessage.length; i++) {
+                        if (checkRoom.newMessage[i].user.id === req.user.id) {
+                            unreadMessages.push(checkRoom.newMessage[i])
+                        }
+                    }
                     checkRoom.member.forEach((member) => {
                         if (member.id !== req.user.id) {
                             avatar.push(member.avatar)
@@ -19,7 +26,8 @@ class RoomController {
                             chatData.name = member.name;
                             chatData.avatar = avatar;
                             chatData.online = member.online;
-                            chatData.lastActivity = member.lastActivity
+                            chatData.lastActivity = member.lastActivity;
+                            chatData.newMessage = unreadMessages
                             members.push(member.id)
                         }
                     })
@@ -33,14 +41,20 @@ class RoomController {
                     let newRoom = await RoomService.createRoomprivate(req);
                     let chatData = new Rooms();
                     let members = []
-                    newRoom.member.forEach((member) => {
-                        unreadMessagesService.create(member, newRoom)
+                    const createUnreadMessages = async (member,newRoom, data) => {
+                        let newData = await unreadMessagesService.create(member, newRoom)
+                        data.push(newData)
+                    }
+                    newRoom.member.forEach( (member)  => {
+                        let data = []
+                         createUnreadMessages(member,newRoom, data)
                         if (member.id !== req.user.id) {
                             chatData.id = newRoom.id;
                             chatData.name = member.name;
                             chatData.avatar = member.avatar;
                             chatData.online = member.online;
-                            chatData.lastActivity = member.lastActivity
+                            chatData.lastActivity = member.lastActivity;
+                            chatData.newMessage = data
                             members.push(member.id)
                         }
                     })
@@ -70,7 +84,7 @@ class RoomController {
     async createGroup(req, res) {
         try {
             let newGroup = await roomService.CreateRoomGroup(req);
-            newGroup.member.forEach((member) => {
+             newGroup.member.forEach((member) => {
                 unreadMessagesService.create(member, newGroup)
             })
             res.status(200).json({
@@ -95,6 +109,13 @@ class RoomController {
             listRoom.forEach(chat => {
                     if (!chat.isGroup) {
                         let avatar = [];
+                        let unreadMessages = [];
+                        for (let i = 0; i < chat.newMessage.length; i++) {
+                            if (chat.newMessage[i].user.id === req.user.id ) {
+                                unreadMessages.push(chat.newMessage[i])
+                                chat.newMessage = unreadMessages
+                            }
+                        }
                         if (chat.messages.length > 0) {
                             chat.member.forEach((member) => {
                                 if (member.id !== req.user.id) {

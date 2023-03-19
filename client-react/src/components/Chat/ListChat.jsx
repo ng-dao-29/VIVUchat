@@ -20,6 +20,8 @@ import StyledBadgeOffline from "./little/statusOffline";
 import StyledBadgeOnline from "./little/statusOnline";
 import moment from "moment";
 import socket from "../../config/socket";
+import Badge from "@mui/material/Badge";
+import MailIcon from '@mui/icons-material/Mail';
 
 export default function ListChat() {
     const dispatch = useDispatch();
@@ -200,10 +202,13 @@ export default function ListChat() {
                                             ): (
                                                 <ListItemText 
                                             primary={<b>{chat.name}</b>}
-                                            secondary={chat.online ? "Online" : moment(chat.lastActivity).fromNow()}
+                                            secondary={chat?.online ? "Online" : moment(chat?.lastActivity).fromNow()}
                                             />
                                             )}
-                                            
+                                            {chat.newMessage[0].newMessage > 0? (
+                                                <Badge badgeContent={chat.newMessage[0].newMessage} color="error"/>
+                                            ): null}
+
                                         </ListItemButton>
                                     </Link>
                                 ))}

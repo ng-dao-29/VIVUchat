@@ -7,6 +7,7 @@ import ChatStart from "../Chat/chatStart";
 import {useDispatch, useSelector} from "react-redux";
 import socket from "../../config/socket";
 import {addChat} from "../../redux/chatSlice";
+import {getChats, readMessage} from "../../services/chatService";
 
 const Item = styled(Paper)(({theme}) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -21,18 +22,22 @@ export default function Home({children}) {
     const {userData} = useSelector((state) => state.auth.user);
 
     useEffect(() => {
-        if (userData) {
-            socket.emit("setUpUser", userData.id);
+        if (!children) {
+            socket.on("newChat", (newChat) => {
+                getChats(dispatch)
+            })
+            socket.on("newMessage", (newMessage) => {
+                getChats(dispatch)
+
+            })
         }
     }, [])
 
     useEffect(() => {
-        if (!children) {
-            socket.on("newChat", (newChat) => {
-                dispatch(addChat(newChat));
-            })
-        }
-    }, [])
+      if (userData) {
+        socket.emit("setUpUser", userData.id);
+      }
+    }, [userData])
 
     return (
         <div

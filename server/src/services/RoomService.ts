@@ -28,7 +28,9 @@ class RoomService {
         let roomName = user.id + ":" + userChat.id;
         let dataChat = await roomRepository.find({
             relations: {
-                newMessage: true,
+                newMessage: {
+                    user: true
+                },
                 member: true
             },
             where: {
