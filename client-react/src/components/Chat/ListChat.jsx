@@ -92,7 +92,7 @@ export default function ListChat() {
                     <IconButton onClick={() => setOpenMenu(true)}>
                         <MenuIcon style={{ width: 30, height: 30, color: "black" }} />
                     </IconButton>
-                    <ListItemText style={{ paddingLeft: 40 }} primary={<b>ViVuChat</b>} />
+                    <ListItemText style={{ paddingLeft: 40 }} primary={<b>VIVUchat</b>} />
                 </ListItem>
                 <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ backgroundColor: "#003A46", pl: 2, pr: 1, pb: 2 }}>
                     <FormControl sx={{ width: "80%" }} variant="outlined">

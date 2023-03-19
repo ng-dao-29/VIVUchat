@@ -34,8 +34,8 @@ export default function Home({ children }) {
     }, [children])
 
     return (
-        <div style={{ backgroundImage: "url(https://img2.thuthuat123.com/uploads/2019/11/19/anh-background-bau-troi-dem_122621961.jpg)" }}>
-            <Grid container spacing={0.1} className=" rounded-lg" >
+        <div className="h-screen bg-[url('https://img2.thuthuat123.com/uploads/2019/11/19/anh-background-bau-troi-dem_122621961.jpg')]">
+            <Grid container spacing={0.1} className=" rounded-lg h-full" >
                 <Grid item xs={3} sx={{ backgroundColor: "rgba(30,28,28,0.93)", p: 0 }}>
                     <ListChat />
                 </Grid>

@@ -119,7 +119,7 @@ export default function AddGroupDialog(props) {
                 <DialogContent dividers style={{ height: 400 }}>
                     <List
                         dense
-                        sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+                        sx={{ width: "100%", maxWidth: 360}}
                     >
                         {listUsers.map((user, index) => {
                             const labelId = `checkbox-list-secondary-label-${user.id}`;
