@@ -3,9 +3,8 @@ import { Rooms } from "../models/Rooms";
 import { Users } from "../models/Users";
 import { Messages } from "../models/Messages";
 const roomRepository = AppDataSource.getRepository(Rooms);
-const userRepository = AppDataSource.getRepository(Users);
 const messageRepository = AppDataSource.getRepository(Messages);
-
+import UnreadMessagesService from "./UnreadMessagesService";
 class MessagesService {
 
     async create(req) {
@@ -14,6 +13,7 @@ class MessagesService {
         newMessage.content = req.body.content;
         newMessage.userSend = req.user;
         let dataNewMessage = await messageRepository.save(newMessage);
+        await UnreadMessagesService.addNewMessage(req.body.roomId)
         return dataNewMessage;
     }
 

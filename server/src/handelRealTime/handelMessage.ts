@@ -1,7 +1,6 @@
 
 module.exports = (io,socket, onlineUser) => {
     const sendMessage = (newMessage, receiver) => {
-        console.log(receiver)
         let userSocketIds = []
         receiver.forEach((idUser) => {
             let userSocketId = onlineUser.get(idUser);
@@ -21,9 +20,10 @@ module.exports = (io,socket, onlineUser) => {
                 userSocketIds.push(userSocketId)
             }
         });
+        let avatar = [userSend.avatar]
         dataChat.name = userSend.name;
-        dataChat.avatar = userSend.avatar;
-        io.to(userSocketIds).emit("newChat", dataChat)
+        dataChat.avatar = avatar;
+        socket.broadcast.to(userSocketIds).emit("newChat", dataChat)
     };
 
     socket.on("sendMessage", sendMessage);

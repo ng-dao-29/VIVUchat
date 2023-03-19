@@ -35,7 +35,6 @@ export const register = (dataForm, dispatch, navigate) => {
             dispatch(setError(res.data.message))
         }
     }).catch((err) => {
-        console.log(err)
     })
 };
 

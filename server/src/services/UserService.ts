@@ -46,7 +46,6 @@ class UserService {
 
     async getUsers(req) {
         const {userIds} = req.body
-        console.log(userIds)
         let users = userRepository.find({
             where: {
                 id: In(userIds)
@@ -125,6 +124,12 @@ class UserService {
         if (dataUser) {
             return dataUser
         }
+    }
+
+    async makeFriend(req) {
+        let user = await userRepository.findOneBy({id: req.user.id});
+        let NewFriend = await userRepository.findOneBy({id: req.body.userId});
+
     }
 }
 

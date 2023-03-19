@@ -12,7 +12,7 @@ import List from "@mui/material/List";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import ListItemText from "@mui/material/ListItemText";
-
+import socket from "../../../config/socket";
 export default function AddGroupDialog(props) {
     const { userData } = useSelector((state) => state.auth.user);
     const navigate = useNavigate();
@@ -42,9 +42,9 @@ export default function AddGroupDialog(props) {
             dispatch(addChat(res.data.data));
             navigate(`/chat/${res.data.data.id}`);
             onClose();
+            socket.emit("")
         })
             .catch((err) => {
-                console.log(err);
                 onClose();
             })
     };

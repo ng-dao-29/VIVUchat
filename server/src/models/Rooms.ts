@@ -12,6 +12,8 @@ import {
 
 import { Users } from "./Users";
 import { Messages } from "./Messages";
+import { NewMessagers} from "./NewMessagers";
+
 @Entity()
 export class Rooms{
     @PrimaryGeneratedColumn()
@@ -22,10 +24,6 @@ export class Rooms{
 
     @Column({type: "varchar", nullable: true})
     name: string;
-
-    // @OneToOne(() => Users, (user) => user)
-    // @JoinColumn()
-    // owner: Users;
 
     @ManyToOne(() => Users, (user) => user)
     @JoinColumn()
@@ -46,4 +44,7 @@ export class Rooms{
 
     @Column({type: "timestamp", nullable: true})
     lastActivity: Date;
+
+    @OneToMany(() => NewMessagers, (newMessage) => newMessage.rooms)
+    newMessage: NewMessagers[];
 }

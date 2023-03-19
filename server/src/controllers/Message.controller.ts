@@ -1,10 +1,11 @@
 import MessageService from "../services/messageService";
 import RoomService from "../services/RoomService";
-
+import UserService from "../services/UserService";
+import UnreadMessagesService from "../services/UnreadMessagesService";
 
 class MessageController {
-    async createMessage(req,res) {
-        try{
+    async createMessage(req, res) {
+        try {
             let checkRoom = await RoomService.checkId(req);
             if (!checkRoom) {
                 res.status(404).json({
@@ -29,7 +30,7 @@ class MessageController {
                     })
                 }
             }
-        } catch(e) {
+        } catch (e) {
             res.status(404).json({
                 success: true,
                 message: e.message,
@@ -39,14 +40,14 @@ class MessageController {
     }
 
     async getMessage(req, res) {
-        try{
+        try {
             let listMessage = await MessageService.getMessages(req);
             res.status(200).json({
                 success: true,
                 message: null,
                 data: listMessage
             })
-        }catch (e) {
+        } catch (e) {
             res.status(404).json({
                 success: true,
                 message: e.message,
@@ -55,6 +56,24 @@ class MessageController {
         }
     }
 
+    async readMessage(req, res) {
+        try {
+            let roomId = req.params.chatId;
+            let user = req.user;
+            let data = await UnreadMessagesService.clean(user.id, roomId);
+                res.status(200).json({
+                    success: true,
+                    message: null,
+                    data: null
+                })
+        } catch (e) {
+            res.status(404).json({
+                success: true,
+                message: e.message,
+                data: null
+            })
+        }
+    }
 }
 
 export default new MessageController();
