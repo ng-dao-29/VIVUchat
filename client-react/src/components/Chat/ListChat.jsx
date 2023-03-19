@@ -21,6 +21,7 @@ import { ThemeProvider } from '@mui/system';
 import { darkTheme } from '../layout/Theme';
 import moment from "moment";
 import socket from "../../config/socket";
+import Badge from "@mui/material/Badge";
 
 export default function ListChat() {
     const dispatch = useDispatch();
@@ -29,7 +30,6 @@ export default function ListChat() {
     const { list } = useSelector((state) => state.chat.data)
     const [open, setOpen] = useState(false);
     const [openMenu, setOpenMenu] = useState(false);
-
     const notSearching = {
         status: false,
         keyword: ''
@@ -81,10 +81,15 @@ export default function ListChat() {
 
     const handleClickChat = (userId) => {
         findOrCreateNewChat([userId]).then((res) => {
-            navigate(`/chat/${res.data.data.id}`);
-            if (res.data.message === "create new chat successfully") {
                 dispatch(addChat(res.data.data));
-            }
+                navigate(`/chat/${res.data.data.id}`);
+            // if (res.data.message === "create new chat successfully") {
+            //     dispatch(addChat(res.data.data));
+            //     navigate(`/chat/${res.data.data.id}`);
+            // } else {
+            //     navigate(`/chat/${res.data.data.id}`);
+            //     dispatch(addChat(res.data.data));
+            // }
         }).catch()
     }
 
@@ -199,10 +204,13 @@ export default function ListChat() {
                                             ): (
                                                 <ListItemText 
                                             primary={<b>{chat.name}</b>}
-                                            secondary={chat.online ? "Online" : moment(chat.lastActivity).fromNow()}
+                                            secondary={chat?.online ? "Online" : moment(chat?.lastActivity).fromNow()}
                                             />
                                             )}
-                                            
+                                            {chat.newMessage[0].newMessage > 0? (
+                                                <Badge badgeContent={chat.newMessage[0].newMessage} color="error"/>
+                                            ): null}
+
                                         </ListItemButton>
                                     </Link>
                                 ))}

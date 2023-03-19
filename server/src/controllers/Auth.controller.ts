@@ -70,7 +70,7 @@ class AuthController {
                 avatar: user.avatar
             };
             const token = JWT.sign(payload, "333-4444-55555",
-                {expiresIn: "1h"});
+                {expiresIn: "12h"});
             const login = await userService.handelUserOnLine(user)
             // const cookieRefresh = JWT.sign(payload, "333-4444-55555",
             //     {expiresIn: "1m"});

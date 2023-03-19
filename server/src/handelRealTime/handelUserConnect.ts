@@ -11,7 +11,7 @@ module.exports = (io, socket, onlineUser) => {
             await userRepository.save(userOff);
             onlineUser.set(idUser, socket.id)
             socket.userId = idUser;
-            io.emit("operationHandling");
+            socket.broadcast.emit("operationHandling");
         } catch (e) {
             io.emit("operationHandling");
             onlineUser.set(idUser, socket.id)
@@ -29,9 +29,9 @@ module.exports = (io, socket, onlineUser) => {
             userOff.online = false;
             await userRepository.save(userOff);
             onlineUser.delete(socket.userId)
-            io.emit("operationHandling");
+            socket.broadcast.emit("operationHandling");
         } catch (err) {
-            io.emit("operationHandling");
+            socket.broadcast.emit("operationHandling");
             onlineUser.delete(socket.userId)
         }
     }

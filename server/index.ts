@@ -4,10 +4,12 @@ import bodyParser from 'body-parser';
 import { AppDataSource } from "./src/database/data-source";
 import routers from "./src/routers/indexRouters";
 const cors = require('cors')
+import * as dotenv from "dotenv";
+dotenv.config();
 
 const handleUserConnection = require("./src/handelRealTime/handelUserConnect")
 const handleMessage = require("./src/handelRealTime/handelMessage")
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 const app = express();
 
 app.use(bodyParser.json());
