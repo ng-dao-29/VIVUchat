@@ -46,8 +46,7 @@ export default function Login() {
 
     return (
             <WrapLogin>
-                <div className="bg-white border flex flex-col gap-2 p-4 pt-10 drop-shadow-md"
-                style={{backgroundColor: "rgba(255,253,253,0.87)"}}>
+                <div className="bg-[rgba(255,253,253,0.87)] flex flex-col gap-2 p-4 pt-10 drop-shadow-md rounded-sm">
                     {/*<img src={logo} alt="logo" className="mx-auto mb-2 h-10 w-52" />*/}
                     <p className="mx-auto text-slate-400 font-bold text-lg max-w-xs text-center	">
                         Đăng nhập
@@ -147,9 +146,7 @@ export default function Login() {
                         </Link>
                     </form>
                 </div>
-                <div className="bg-white border p-5 text-center drop-shadow-md"
-                     style={{backgroundColor: "rgba(255,253,253,0.87)"}}
-                >
+                <div className="bg-[rgba(255,253,253,0.87)] border p-5 text-center drop-shadow-md rounded-sm">
                     Bạn chưa có tài khoản?{" "}
                     <Link to="/register" className="text-sm font-medium  text-blue-800"
                           onClick={() => dispatch(setError(null))}>

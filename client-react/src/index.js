@@ -7,26 +7,16 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./redux/store";
 import { HelmetProvider } from "react-helmet-async";
-import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-const darkTheme = createTheme({
-    palette: {
-        mode: 'dark',
-    },
-});
-
-
 root.render(
     <Provider store={store}>
-        <ThemeProvider theme={darkTheme}>
             <BrowserRouter>
                 <HelmetProvider>
                     <App />
                 </HelmetProvider>
             </BrowserRouter>
-        </ThemeProvider>
     </Provider>
 );
 reportWebVitals();

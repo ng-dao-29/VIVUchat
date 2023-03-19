@@ -13,11 +13,12 @@ import { useState, useEffect } from "react";
 import { addChat } from '../../redux/chatSlice';
 import { getChats, findOrCreateNewChat } from "../../services/chatService";
 import { searchUser } from '../../services/userService';
-import AddChat from "./little/AddChat";
 import AddGroupDialog from './little/AddGroupDialog';
 import MenuWindow from "../OtherComponents/MenuWindow";
 import StyledBadgeOffline from "./little/statusOffline";
 import StyledBadgeOnline from "./little/statusOnline";
+import { ThemeProvider } from '@mui/system';
+import { darkTheme } from '../layout/Theme';
 import moment from "moment";
 
 export default function ListChat() {
@@ -88,39 +89,43 @@ export default function ListChat() {
     return (
         <div>
             <div className="w-full" style={{ backgroundColor: "#003A46" }}>
-                <ListItem sx={{ pl: 1 }}>
-                    <IconButton onClick={() => setOpenMenu(true)}>
-                        <MenuIcon style={{ width: 30, height: 30, color: "black" }} />
-                    </IconButton>
-                    <ListItemText style={{ paddingLeft: 40 }} primary={<b>VIVUchat</b>} />
-                </ListItem>
-                <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ backgroundColor: "#003A46", pl: 2, pr: 1, pb: 2 }}>
-                    <FormControl sx={{ width: "80%" }} variant="outlined">
-                        <OutlinedInput
-                            id="search-chat"
-                            type='text'
-                            placeholder='Tìm kiếm'
-                            size="small"
-                            sx={{ pl: 0 }}
-                            value={searching.keyword}
-                            startAdornment={
-                                <InputAdornment position="start">
-                                    <IconButton>
-                                        {searching.status ?
-                                            <CloseIcon onClick={() => {
-                                                setSearching(notSearching);
-                                            }} />
-                                            : <SearchIcon />}
-                                    </IconButton>
-                                </InputAdornment>
-                            }
-                            onChange={search}
-                        />
-                    </FormControl>
-                    <IconButton onClick={() => setOpen(true)}>
-                        <GroupAddIcon />
-                    </IconButton>
-                </Stack>
+                <ThemeProvider theme={darkTheme}>
+                    <ListItem sx={{ pl: 1 }}>
+                        <IconButton onClick={() => setOpenMenu(true)}>
+                            <MenuIcon style={{ width: 30, height: 30 }} />
+                        </IconButton>
+                        <ListItemText style={{ ml: 5, color: "white" }} >
+                            VIVUchat
+                        </ListItemText>
+                    </ListItem>
+                    <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ backgroundColor: "#003A46", pl: 2, pr: 1, pb: 2 }}>
+                        <FormControl sx={{ width: "80%" }} variant="outlined">
+                            <OutlinedInput
+                                id="search-chat"
+                                type='text'
+                                placeholder='Tìm kiếm'
+                                size="small"
+                                sx={{ pl: 0 }}
+                                value={searching.keyword}
+                                startAdornment={
+                                    <InputAdornment position="start">
+                                        <IconButton>
+                                            {searching.status ?
+                                                <CloseIcon onClick={() => {
+                                                    setSearching(notSearching);
+                                                }} />
+                                                : <SearchIcon />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                }
+                                onChange={search}
+                            />
+                        </FormControl>
+                        <IconButton onClick={() => setOpen(true)}>
+                            <GroupAddIcon />
+                        </IconButton>
+                    </Stack>
+                </ThemeProvider>
                 <AddGroupDialog
                     open={open}
                     onClose={handleClose}
@@ -137,18 +142,12 @@ export default function ListChat() {
             </SwipeableDrawer>
 
             <div>
-                <List sx={{
-                    width: '100%',
-                    maxWidth: 360,
-                    bgcolor: 'background.paper',
-                    marginTop: "8px",
-                    padding: 0,
-                }}>
+                <ThemeProvider theme={darkTheme}>
                     {
                         searching.status ?
                             <List
                                 dense
-                                sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+                                sx={{ width: "100%", maxWidth: 360, py: 0 }}
                             >
                                 {searchedUsers.map((user, index) => {
                                     const labelId = `checkbox-list-secondary-label-${user.id}`;
@@ -169,9 +168,9 @@ export default function ListChat() {
                                 })}
                             </List>
                             :
-                            <Stack spacing={1}>
+                            <List sx={{py: 0}}>
                                 {list.map((chat, index) => (
-                                    <Link to={`/chat/${chat.id}`} key={index} style={{ backgroundColor: "rgba(237,234,239,0.8)" }}>
+                                    <Link to={`/chat/${chat.id}`} key={index}>
                                         <ListItemButton>
                                             <ListItemAvatar>
                                                 {chat.online ? (
@@ -191,15 +190,15 @@ export default function ListChat() {
                                                 )}
 
                                             </ListItemAvatar>
-                                            <ListItemText primary={<b>{chat.name}</b>}
+                                            <ListItemText primary={chat.name}
                                                 secondary={chat.online ? "Online" : moment(chat.lastActivity).fromNow()}
                                             />
                                         </ListItemButton>
                                     </Link>
                                 ))}
-                            </Stack>
+                            </List>
                     }
-                </List>
+                </ThemeProvider>
             </div>
         </div>
     )
