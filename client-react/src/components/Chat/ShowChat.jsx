@@ -35,7 +35,7 @@ export default function ShowChat() {
 
     useEffect(() => {
         readMessage(params).catch()
-        getChats(dispatch)
+        // getChats(dispatch)
         getDataChat(params)
             .then((res) => {
                 setDataChat(res.data.data)

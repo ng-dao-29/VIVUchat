@@ -22,7 +22,6 @@ import { darkTheme } from '../layout/Theme';
 import moment from "moment";
 import socket from "../../config/socket";
 import Badge from "@mui/material/Badge";
-import MailIcon from '@mui/icons-material/Mail';
 
 export default function ListChat() {
     const dispatch = useDispatch();
@@ -31,7 +30,6 @@ export default function ListChat() {
     const { list } = useSelector((state) => state.chat.data)
     const [open, setOpen] = useState(false);
     const [openMenu, setOpenMenu] = useState(false);
-
     const notSearching = {
         status: false,
         keyword: ''
@@ -83,10 +81,15 @@ export default function ListChat() {
 
     const handleClickChat = (userId) => {
         findOrCreateNewChat([userId]).then((res) => {
-            navigate(`/chat/${res.data.data.id}`);
-            if (res.data.message === "create new chat successfully") {
                 dispatch(addChat(res.data.data));
-            }
+                navigate(`/chat/${res.data.data.id}`);
+            // if (res.data.message === "create new chat successfully") {
+            //     dispatch(addChat(res.data.data));
+            //     navigate(`/chat/${res.data.data.id}`);
+            // } else {
+            //     navigate(`/chat/${res.data.data.id}`);
+            //     dispatch(addChat(res.data.data));
+            // }
         }).catch()
     }
 

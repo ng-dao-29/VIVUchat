@@ -28,7 +28,6 @@ export default function Home({children}) {
             })
             socket.on("newMessage", (newMessage) => {
                 getChats(dispatch)
-
             })
         }
     }, [])

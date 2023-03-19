@@ -13,7 +13,7 @@ const CheckToken = ({ children }) => {
     if (!userData) {
       getUser(dispatch,navigate)
     }
-  },[userData])
+  },[])
 
 
   return (

@@ -61,6 +61,7 @@ class RoomService {
         let userChat = await userRepository.findOneBy({
             id: req.body.userId[0],
         });
+        console.log(userChat)
         let roomName = user.id + ":" + userChat.id;
         let newRoom = new Rooms();
         newRoom.name = roomName;
